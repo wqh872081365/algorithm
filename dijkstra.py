@@ -5,6 +5,7 @@
 # Dijkstra算法
 
 import sys
+import heapq
 
 
 class Vertex:
@@ -91,9 +92,6 @@ def shortest(v, path):
         path.append(v.previous.get_id())
         shortest(v.previous, path)
     return
-
-
-import heapq
 
 
 def dijkstra(aGraph, start, target):

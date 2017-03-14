@@ -51,14 +51,24 @@ def selection_sort(lst):
     return lst
 
 
+# 堆排序　使用heapq模块
+from heapq import *
+
+
+def heapsort(iterable):
+    h = []
+    for value in iterable:
+        heappush(h,value)
+    return [heappop(h) for i in range(len(h))]
+
 
 def main():
     lst = [12,4,5,6,7,3,6,1,15]
     # print quick_sort(lst)
     # print insert_sort(lst)
     # print bubble_sort(lst)
-    print selection_sort(lst)
-
+    # print selection_sort(lst)
+    print heapsort(lst)
 
 if __name__ == '__main__':
     main()
