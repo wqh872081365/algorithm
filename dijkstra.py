@@ -169,6 +169,12 @@ def main():
     shortest(target, path)
     print 'The shortest path : %s' % (path[::-1])
 
+    print "all vertex shortest distance"
+    for v in g:
+        path = [v.get_id()]
+        shortest(v, path)
+        print v.get_id() + ' ' +v.get_distance().__str__() + ' ' + str(path[::-1])
+
 
 if __name__ == '__main__':
     main()
