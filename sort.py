@@ -13,6 +13,50 @@ def quick_sort(lst):
     return quick_sort([x for x in lst[1:] if x <= lst[0]]) + [lst[0]] + quick_sort([x for x in lst[1:] if x > lst[0]])
 
 
+def quick_sort_lomuto(lst, lo, hi):
+
+    def partition(lst, lo, hi):
+        p = lst[hi]
+        i = lo
+        for j in range(lo, hi):
+            if lst[j] < p:
+                if i != j:
+                    lst[i], lst[j] = lst[j], lst[i]
+                i += 1
+        lst[i], lst[hi] = p, lst[i]
+        return i
+
+    if lo < hi:
+        p = partition(lst, lo, hi)
+        quick_sort_lomuto(lst, lo, p - 1)
+        quick_sort_lomuto(lst, p + 1, hi)
+
+
+def quick_sort_hoare(lst, lo, hi):
+
+    def partition(lst, lo, hi):
+        p = lst[lo]
+        i = lo - 1
+        j = hi + 1
+        while True:
+            while True:
+                i += 1
+                if lst[i] >= p:
+                    break
+            while True:
+                j -= 1
+                if lst[j] <= p:
+                    break
+            if i >= j:
+                return j
+            lst[i], lst[j] = lst[j], lst[i]
+
+    if lo < hi:
+        p = partition(lst, lo, hi)
+        quick_sort_hoare(lst, lo, p)
+        quick_sort_hoare(lst, p + 1, hi)
+
+
 # 插入排序
 def insert_sort(lst):
     n = len(lst)
@@ -93,6 +137,8 @@ def heap_sort(lst):
 def main():
     lst = [12,4,5,6,7,3,6,1,15]
     # print quick_sort(lst)
+    # quick_sort_lomuto(lst, 0, len(lst)-1)
+    # quick_sort_hoare(lst, 0, len(lst)-1)
     # print insert_sort(lst)
     # print bubble_sort(lst)
     # print selection_sort(lst)
