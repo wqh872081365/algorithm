@@ -134,6 +134,29 @@ def heap_sort(lst):
     return lst
 
 
+def merge_sort(lst, l, r):
+
+    def merge(lst, l, m, r):
+        left = lst[l: m+1]
+        left.append(float('inf'))
+        right = lst[m+1: r+1]
+        right.append(float('inf'))
+        i, j = 0, 0
+        for k in range(l, r+1):
+            if left[i] < right[j]:
+                lst[k] = left[i]
+                i += 1
+            else:
+                lst[k] = right[j]
+                j += 1
+
+    if r > l:
+        mid = (r + l) / 2
+        merge_sort(lst, l, mid)
+        merge_sort(lst, mid + 1, r)
+        merge(lst, l, mid, r)
+
+
 def main():
     lst = [12,4,5,6,7,3,6,1,15]
     # print quick_sort(lst)
@@ -143,7 +166,8 @@ def main():
     # print bubble_sort(lst)
     # print selection_sort(lst)
     # print heapsort(lst)
-    print heap_sort(lst)
+    # print heap_sort(lst)
+    merge_sort(lst, 0, len(lst)-1)
 
 
 if __name__ == '__main__':
