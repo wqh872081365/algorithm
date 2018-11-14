@@ -4,13 +4,10 @@
 
 # quicksort
 
-# Wikipedia
-
-# 想去掉重复值只需把'='去掉即可
 def quick_sort(lst):
     if len(lst) <= 1:
         return lst
-    return quick_sort([x for x in lst[1:] if x <= lst[0]]) + [lst[0]] + quick_sort([x for x in lst[1:] if x > lst[0]])
+    return quick_sort([x for x in lst[1:] if x < lst[0]]) + [lst[0]] + quick_sort([x for x in lst[1:] if x >= lst[0]])
 
 
 def quick_sort_lomuto(lst, lo, hi):
@@ -18,7 +15,7 @@ def quick_sort_lomuto(lst, lo, hi):
     def partition(lst, lo, hi):
         p = lst[hi]
         i = lo
-        for j in range(lo, hi):
+        for j in xrange(lo, hi):
             if lst[j] < p:
                 if i != j:
                     lst[i], lst[j] = lst[j], lst[i]
@@ -59,63 +56,65 @@ def quick_sort_hoare(lst, lo, hi):
 
 # 插入排序
 def insert_sort(lst):
-    n = len(lst)
-    if n <= 1:
-        return lst
-    for i in range(1, n):
-        for j in range(i, 0, -1):
-            if lst[j] < lst[j-1]:
-                lst[j], lst[j-1]=lst[j-1], lst[j]
+    for i in xrange(1, len(lst)):
+        tem = lst[i]
+        j = i
+        for j in xrange(i, 0, -1):
+            if lst[j-1] > tem:
+                lst[j] = lst[j-1]
+            else:
+                break
+        else:
+            j -= 1
+        lst[j] = tem
     return lst
 
 
 # 冒泡排序
 def bubble_sort(lst):
-    if len(lst) <= 1:
-        return lst
-    for j in range(len(lst)-1,0,-1):
-        for i in range(0, j):
+    j = len(lst) - 1
+    while j > 0:
+        n_j = 0
+        for i in xrange(0, j):
             if lst[i] > lst[i+1]:
                 lst[i], lst[i+1] = lst[i+1], lst[i]
+                n_j = i
+        j = n_j
     return lst
 
 
 # 选择排序
 def selection_sort(lst):
     n = len(lst)
-    if n <= 1:
-        return lst
-    for i in range(n-1):
-        min_index = i
-        for j in range(i+1, n):
-            if lst[min_index] > lst[j]:
-                min_index = j
-        if min_index != i:
-            lst[min_index], lst[i] = lst[i], lst[min_index]
+    for i in xrange(n-1):
+        min_i = i
+        for j in xrange(i+1, n):
+            if lst[min_i] > lst[j]:
+                min_i = j
+        if min_i != i:
+            lst[min_i], lst[i] = lst[i], lst[min_i]
     return lst
 
 
 # 堆排序　使用heapq模块
-from heapq import *
+def heapsort(lst):
 
+    from heapq import heapify, heappop
 
-def heapsort(iterable):
-    h = []
-    for value in iterable:
-        heappush(h,value)
-    return [heappop(h) for i in range(len(h))]
+    heapify(lst)
+    return [heappop(lst) for _ in xrange(len(lst))]
 
 
 # 堆排序　
 def heap_sort(lst):
+
     def sift_down(start, end):
-        """最大堆调整"""
         root = start
         while True:
             child = 2 * root + 1
             if child > end:
                 break
-            if child + 1 <= end and lst[child] < lst[child + 1]:
+            if child + 1 <= end and lst[child] < lst[child+1]:
                 child += 1
             if lst[root] < lst[child]:
                 lst[root], lst[child] = lst[child], lst[root]
@@ -123,14 +122,16 @@ def heap_sort(lst):
             else:
                 break
 
+    n = len(lst)
+
     # 创建最大堆
-    for start in xrange((len(lst) - 2) // 2, -1, -1):
-        sift_down(start, len(lst) - 1)
+    for start in xrange(n//2-1, -1, -1):
+        sift_down(start, n-1)
 
     # 堆排序
-    for end in xrange(len(lst) - 1, 0, -1):
+    for end in xrange(n-1, 0, -1):
         lst[0], lst[end] = lst[end], lst[0]
-        sift_down(0, end - 1)
+        sift_down(0, end-1)
     return lst
 
 
@@ -142,8 +143,8 @@ def merge_sort(lst, l, r):
         right = lst[m+1: r+1]
         right.append(float('inf'))
         i, j = 0, 0
-        for k in range(l, r+1):
-            if left[i] < right[j]:
+        for k in xrange(l, r+1):
+            if left[i] <= right[j]:
                 lst[k] = left[i]
                 i += 1
             else:
@@ -167,7 +168,8 @@ def main():
     # print selection_sort(lst)
     # print heapsort(lst)
     # print heap_sort(lst)
-    merge_sort(lst, 0, len(lst)-1)
+    # merge_sort(lst, 0, len(lst)-1)
+    # print lst
 
 
 if __name__ == '__main__':
